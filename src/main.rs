@@ -1,21 +1,32 @@
+//Juego de adivinar
+extern crate rand;
+
+use std::io;
+use std::cmp::Ordering;
+use rand::Rng;
 
 fn main() {
-    //obtener nombre del usuario
-   println!("Introduce tu nombre:");
-   let mut nombre : String = String::new();
-   std::io::stdin().read_line(&mut nombre).unwrap();
-   nombre = nombre.trim().to_string();
-   // obtener edad del usuario
-   println!("Introduce tu edad:");
-   let mut edad : String = String::new();
-   std::io::stdin().read_line(&mut edad).unwrap();
-   edad = edad.trim().to_string();
-   // obtener nacionalidad del usuario
-   println!("Introduce tu nacionalidad:");
-   let mut nacionalidad : String = String::new();
-   std::io::stdin().read_line(&mut nacionalidad).unwrap();
-   nacionalidad = nacionalidad.trim().to_string();
+    println!("guess the number");
+    let secret_number = rand::thread_rng().gen_range(1, 101);
+    println!("The secret number is: { }", secret_number);
+    loop {
+        println!("Please input your guess");
+        let mut guess = String::new();
+    io::stdin().read_line(&mut guess)
+        .expect("Failed to read the line");
 
-
-   println!("Hola bienvenido {} con {} de {}", nombre, edad, nacionalidad);
+    let guess: u32 = match guess.trim().parse() {
+        Ok(num) => num,
+        Err(_) => continue,
+    };
+     println!("Your guessed: {}", guess);
+    match guess.cmp(&secret_number) {
+        Ordering::Less => println!("Too small!"),
+        Ordering::Greater => println!("Too Big!"),
+        Ordering::Equal => {
+            println!("You Win!");
+            break;
+         }
+      }
+    }
 }
